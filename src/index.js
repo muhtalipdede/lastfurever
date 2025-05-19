@@ -17,14 +17,17 @@ const authRoutes = require('./routes/auth.routes');
 const petRoutes = require('./routes/pet.routes');
 const notificationRoutes = require('./routes/notification.routes');
 const veterinarianRoutes = require('./routes/veterinarian');
+const addressRoutes = require('./routes/address.routes');
 
-app.use('/api/veterinarians', veterinarianRoutes);
+// Route handlers
 app.use('/api/auth', authRoutes);
 app.use('/api/pets', petRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/veterinarians', veterinarianRoutes);
+app.use('/api/addresses', addressRoutes);
 
 // Database connection and server start
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
 async function startServer() {
   try {
@@ -32,8 +35,7 @@ async function startServer() {
     console.log('Database connection has been established successfully.');
     
     // Sync database (in development)
-    // await sequelize.sync({ alter: false, force: false });
-    
+    await sequelize.sync({ alter: true });
     console.log('Database synchronized');
 
     app.listen(PORT, () => {
