@@ -1,4 +1,5 @@
 const Address = require('../models/address.model');
+const Notification = require('../models/notification.model');
 const { Op } = require('sequelize');
 
 const addressController = {
@@ -60,6 +61,15 @@ const addressController = {
         addressTitle,
         isDefault
       });
+
+      const notification = {
+        user_id: req.user.id,
+        message: `Yeni adres eklendi: ${addressTitle || 'Yeni Adres'}`,
+        type: 'Info',
+        isRead: false
+      };
+
+      await Notification.create(notification);
 
       res.status(201).json(address);
     } catch (error) {
